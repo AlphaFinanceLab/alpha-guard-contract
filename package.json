@@ -1,0 +1,18 @@
+{
+  "name": "ilh",
+  "version": "1.0.0",
+  "main": "index.js",
+  "directories": {
+    "test": "tests"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "devDependencies": {
+    "prettier": "^2.2.1",
+    "prettier-plugin-solidity": "^1.0.0-beta.2"
+  }
+}
