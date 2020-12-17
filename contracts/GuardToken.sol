@@ -8,7 +8,7 @@ import 'OpenZeppelin/openzeppelin-contracts@3.2.0/contracts/math/SafeMath.sol';
 import 'OpenZeppelin/openzeppelin-contracts@3.2.0/contracts/math/Math.sol';
 import '../interfaces/IPricer.sol';
 
-contract DebtToken2 is ERC20, ReentrancyGuard {
+contract GuardToken is ERC20, ReentrancyGuard {
   using SafeERC20 for IERC20;
 
   event AdjustDebtDecimals(uint decimals);
