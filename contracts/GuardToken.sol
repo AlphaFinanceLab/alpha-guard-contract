@@ -190,7 +190,7 @@ contract GuardToken is ERC20, ReentrancyGuard {
   function activate(uint count, uint duration) external nonReentrant returns (uint) {
     uint spending = pricer.getSpending(count, duration);
     _burn(msg.sender, spending);
-    _mint(address(0), spending);
+    _mint(address(1), spending);
     uint id = covers[msg.sender].length;
     covers[msg.sender].push(Cover(count, spending, pricer.getCurrentPrice(), now + duration));
     emit Activate(msg.sender, id, count, duration, spending);
@@ -207,7 +207,7 @@ contract GuardToken is ERC20, ReentrancyGuard {
     require(expiredAt != 0, '!!executed');
     require(now > expiredAt || msg.sender == owner, '!authorized');
     cover.expiredAt = 0;
-    _burn(address(0), cover.spending);
+    _burn(address(1), cover.spending);
     uint maxPayout = pricer.getMaxPayout(cover.spending);
     uint calPayout = pricer.getPayout(cover.count, cover.startPrice);
     payout = Math.min(maxPayout, calPayout);
