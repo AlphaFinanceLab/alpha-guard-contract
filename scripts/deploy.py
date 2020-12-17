@@ -1,3 +1,4 @@
+import time
 import os
 import requests
 import subprocess
@@ -12,6 +13,7 @@ def get_eth_px():
 
 def deploy(contract, name, deployer, *args):
     result = contract.deploy(*args, {'from': deployer})
+    time.sleep(3)  # Wait a bit to ensure Etherscan picks it up
     subprocess.check_call([
         'solt',
         'verify',
