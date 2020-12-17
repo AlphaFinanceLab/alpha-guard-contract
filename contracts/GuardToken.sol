@@ -217,7 +217,7 @@ contract GuardToken is ERC20, ReentrancyGuard {
       payout = payout.sub(bounty);
       token.transfer(msg.sender, bounty);
     }
-    token.transfer(owner, bounty);
+    token.transfer(owner, payout);
     emit Execute(msg.sender, owner, id, payout, bounty);
   }
 }
