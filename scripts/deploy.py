@@ -13,22 +13,22 @@ def get_eth_px():
 
 def deploy(contract, name, deployer, *args):
     result = contract.deploy(*args, {'from': deployer})
-    time.sleep(3)  # Wait a bit to ensure Etherscan picks it up
-    subprocess.check_call([
-        'solt',
-        'verify',
-        'solc-input-contracts.json',
-        result.address,
-        name,
-        '--compiler',
-        'v0.6.12',
-        '--etherscan',
-        os.getenv('ETHERSCAN_TOKEN'),
-        '--infura',
-        os.getenv('WEB3_INFURA_PROJECT_ID'),
-        '--network',
-        'kovan',
-    ])
+    # time.sleep(10)  # Wait a bit to ensure Etherscan picks it up
+    # subprocess.check_call([
+    #     'solt',
+    #     'verify',
+    #     'solc-input-contracts.json',
+    #     result.address,
+    #     name,
+    #     '--compiler',
+    #     'v0.6.12',
+    #     '--etherscan',
+    #     os.getenv('ETHERSCAN_TOKEN'),
+    #     '--infura',
+    #     os.getenv('WEB3_INFURA_PROJECT_ID'),
+    #     '--network',
+    #     'kovan',
+    # ])
     return result
 
 

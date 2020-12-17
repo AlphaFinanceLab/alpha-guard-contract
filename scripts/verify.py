@@ -11,6 +11,5 @@ def main():
         'codeformat': 'solidity-standard-json-input',
         # 'contractname': '',
         'compilerversion': 'v0.6.12+commit.27d51765',
-
-    }).json())
+        'constructorArguements':}).json())
     pass
