@@ -68,6 +68,7 @@ contract GuardToken is ERC20, ReentrancyGuard {
   ) public ERC20(name, symbol) {
     token = _token;
     pricer = _pricer;
+    governor = msg.sender;
   }
 
   function setPricer(IPricer _pricer) external {
