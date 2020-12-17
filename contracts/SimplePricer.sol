@@ -22,7 +22,8 @@ contract SimplePricer is Ownable, IPricer {
   }
 
   function getSpending(uint count, uint duration) external view override returns (uint) {
-    return count.mul(duration);
+    require(duration > 1 days, 'duration too small');
+    return count.mul(duration).div(1 days);
   }
 
   function getMaxPayout(uint count) external view override returns (uint) {
