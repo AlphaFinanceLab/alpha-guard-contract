@@ -21,7 +21,6 @@ contract GuardToken is ERC20, ReentrancyGuard {
   event Activate(address owner, uint id, uint count, uint duraiton, uint spending);
   event Claim(address owner, uint id, uint value);
 
-  uint public constant MIN_SUPPLY = 1e18;
   uint public constant BOUNTY_BPS_START = 500;
   uint public constant BOUNTY_BPS_GROW = 9500;
   uint public constant BOUNTY_DECAY_PERIOD = 24 hours;
