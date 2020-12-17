@@ -202,11 +202,11 @@ contract GuardToken is ERC20, ReentrancyGuard {
     returns (uint payout, uint bounty)
   {
     Cover storage cover = covers[msg.sender][id];
-    _burn(address(0), cover.spending);
     uint expiredAt = cover.expiredAt;
     require(expiredAt != 0, '!!executed');
     require(now > expiredAt || msg.sender == owner, '!authorized');
     cover.expiredAt = 0;
+    _burn(address(0), cover.spending);
     uint maxPayout = pricer.getMaxPayout(cover.spending);
     uint calPayout = pricer.getPayout(cover.count, cover.startPrice);
     payout = Math.min(maxPayout, calPayout);
