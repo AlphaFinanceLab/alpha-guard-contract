@@ -62,9 +62,8 @@ contract GuardToken is ERC20, ReentrancyGuard, Governable {
   constructor(
     IERC20 _token,
     IPricer _pricer,
-    string memory name,
     string memory symbol
-  ) public ERC20(name, symbol) {
+  ) public ERC20(symbol, symbol) {
     token = _token;
     pricer = _pricer;
   }
@@ -191,7 +190,7 @@ contract GuardToken is ERC20, ReentrancyGuard, Governable {
   {
     Cover storage cover = covers[msg.sender][id];
     uint expiredAt = cover.expiredAt;
-    require(expiredAt != 0, '!!executed');
+    require(expiredAt != 0, '!available');
     require(now > expiredAt || msg.sender == owner, '!authorized');
     cover.expiredAt = 0;
     _burn(address(1), cover.spending);

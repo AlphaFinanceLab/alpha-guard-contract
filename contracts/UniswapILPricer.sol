@@ -71,11 +71,9 @@ contract UniswapILPricer is Governable, IPricer {
   }
 
   function getPayout(uint count, uint startPrice) external view override returns (uint) {
-    uint endPrice = oracle.getCurrentPrice();
     uint sqrtStart = ILMath.sqrt(startPrice);
-    uint sqrtEnd = ILMath.sqrt(endPrice);
-    uint sqrtSum = ILMath.sqrt(startPrice.add(endPrice));
+    uint sqrtEnd = ILMath.sqrt(oracle.getCurrentPrice());
     uint diffSqrt = sqrtStart > sqrtEnd ? sqrtStart - sqrtEnd : sqrtEnd - sqrtStart;
-    return count.mul(diffSqrt).div(sqrtSum).mul(diffSqrt).div(sqrtSum);
+    return count.mul(diffSqrt).div(sqrtStart).mul(diffSqrt).div(sqrtEnd).div(2);
   }
 }

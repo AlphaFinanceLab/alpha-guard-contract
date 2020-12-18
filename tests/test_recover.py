@@ -18,8 +18,7 @@ def test_recover(admin, alice, eve, mock_1, mock_2, mock_3, guard):
     assert mock_1.balanceOf(admin) == amt_1
 
     amt_2 = 10 ** 17
-    mock_2.approve(guard, 2**256-1, {'from': alice})
-    mock_2.transferFrom(alice, guard, amt_2, {'from': guard})
+    mock_2.transfer(guard, amt_2, {'from': alice})
 
     # eve tries to recover
     with brownie.reverts('!governor'):

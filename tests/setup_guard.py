@@ -14,4 +14,4 @@ def token(admin, MockERC20):
 
 @pytest.fixture(scope='function')
 def guard(admin, GuardToken, token,  simple_pricer):
-    return GuardToken.deploy(token, simple_pricer, "guard", "GRD", {'from': admin})
+    return GuardToken.deploy(token, simple_pricer, "GRD", {'from': admin})
