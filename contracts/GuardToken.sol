@@ -6,9 +6,10 @@ import 'OpenZeppelin/openzeppelin-contracts@3.2.0/contracts/token/ERC20/SafeERC2
 import 'OpenZeppelin/openzeppelin-contracts@3.2.0/contracts/utils/ReentrancyGuard.sol';
 import 'OpenZeppelin/openzeppelin-contracts@3.2.0/contracts/math/SafeMath.sol';
 import 'OpenZeppelin/openzeppelin-contracts@3.2.0/contracts/math/Math.sol';
+import './Governable.sol';
 import '../interfaces/IPricer.sol';
 
-contract GuardToken is ERC20, ReentrancyGuard {
+contract GuardToken is ERC20, ReentrancyGuard, Governable {
   using SafeERC20 for IERC20;
 
   event AdjustDebtDecimals(uint decimals);
@@ -57,8 +58,6 @@ contract GuardToken is ERC20, ReentrancyGuard {
   uint public allDebtDecimals;
   uint public allFund;
   uint public allFundDecimals;
-  address public governor;
-  address public pendingGovernor;
 
   constructor(
     IERC20 _token,
@@ -68,26 +67,14 @@ contract GuardToken is ERC20, ReentrancyGuard {
   ) public ERC20(name, symbol) {
     token = _token;
     pricer = _pricer;
-    governor = msg.sender;
   }
 
-  function setPricer(IPricer _pricer) external {
+  function setPricer(IPricer _pricer) external onlyGov {
     require(msg.sender == governor, '!governor');
     pricer = _pricer;
   }
 
-  function setPendingGovernor(address _pendingGovernor) external {
-    require(msg.sender == governor, '!governor');
-    pendingGovernor = _pendingGovernor;
-  }
-
-  function acceptGovernor() external {
-    require(msg.sender == pendingGovernor, '!pendingGovernor');
-    governor = msg.sender;
-    pendingGovernor = address(0);
-  }
-
-  function recover(IERC20 what, uint amount) external {
+  function recover(IERC20 what, uint amount) external onlyGov {
     require(msg.sender == governor, '!governor');
     what.transfer(msg.sender, amount == uint(-1) ? what.balanceOf(address(this)) : amount);
   }

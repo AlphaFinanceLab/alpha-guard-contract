@@ -3,17 +3,26 @@ pragma solidity 0.6.12;
 import 'OpenZeppelin/openzeppelin-contracts@3.2.0/contracts/math/SafeMath.sol';
 import 'OpenZeppelin/openzeppelin-contracts@3.2.0/contracts/math/Math.sol';
 import 'OpenZeppelin/openzeppelin-contracts@3.2.0/contracts/access/Ownable.sol';
+import './Governable.sol';
 import '../interfaces/IPricer.sol';
 
-contract SimplePricer is Ownable, IPricer {
+contract SimplePricer is Governable, IPricer {
   using SafeMath for uint;
+
   uint public price;
+  address public relayer;
 
   constructor(uint _price) public {
     price = _price;
+    relayer = msg.sender;
   }
 
-  function setPrice(uint _price) external onlyOwner {
+  function setRelayer(address _relayer) external onlyGov {
+    relayer = _relayer;
+  }
+
+  function setPrice(uint _price) external {
+    require(msg.sender == relayer || msg.sender == governor, '!relayer');
     price = _price;
   }
 
