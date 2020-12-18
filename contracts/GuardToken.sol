@@ -18,7 +18,7 @@ contract GuardToken is ERC20, ReentrancyGuard {
   event Skim(address owner, uint back, uint less);
   event Exit(address owner, uint id, uint count, uint debt, uint fund);
   event Execute(address caller, address owner, uint id, uint payout, uint bounty);
-  event Activate(address owner, uint id, uint count, uint duraiton, uint spending);
+  event Activate(address owner, uint id, uint count, uint duration, uint spending);
   event Claim(address owner, uint id, uint value);
 
   uint public constant BOUNTY_BPS_START = 500;
@@ -176,15 +176,15 @@ contract GuardToken is ERC20, ReentrancyGuard {
     return id;
   }
 
-  function claim(address owner, uint id) external nonReentrant {
-    Receipt storage receipt = receipts[owner][id];
+  function claim(uint id) external nonReentrant {
+    Receipt storage receipt = receipts[msg.sender][id];
     require(now >= receipt.validAt, '!valid');
     receipt.validAt = uint(-1);
     uint fund = receipt.fund >> (allFundDecimals - receipt.fundDecimals);
     uint value = fund.mul(token.balanceOf(address(this))).div(allFund);
     allFund = allFund.sub(fund);
-    token.transfer(owner, value);
-    emit Claim(owner, id, value);
+    token.transfer(msg.sender, value);
+    emit Claim(msg.sender, id, value);
   }
 
   function activate(uint count, uint duration) external nonReentrant returns (uint) {

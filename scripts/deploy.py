@@ -32,11 +32,21 @@ def deploy(contract, name, deployer, *args):
     return result
 
 
+# def main():
+#     subprocess.check_call(['solt', 'write', 'contracts', '--npm'])
+#     deployer = accounts.load('deployer')
+#     feeder = accounts.load('feeder')
+#     token = deploy(MockERC20, 'MockERC20', deployer, 'Mock ETH', 'mETH')
+#     pricer = deploy(SimplePricer, 'SimplePricer', deployer, get_eth_px())
+#     pricer.transferOwnership(feeder, {'from': deployer})
+#     guard = deploy(GuardToken, 'GuardToken', deployer, token, pricer, 'MOCK GUARD', 'mGUARD')
+
+
 def main():
     subprocess.check_call(['solt', 'write', 'contracts', '--npm'])
     deployer = accounts.load('deployer')
     feeder = accounts.load('feeder')
-    token = deploy(MockERC20, 'MockERC20', deployer, 'Mock ETH', 'mETH')
-    pricer = deploy(SimplePricer, 'SimplePricer', deployer, get_eth_px())
+    token = MockERC20.deploy('Mock ETH', 'mETH', {'from': deployer})
+    pricer = SimplePricer.deploy(get_eth_px(), {'from': deployer})
     pricer.transferOwnership(feeder, {'from': deployer})
-    guard = deploy(GuardToken, 'GuardToken', deployer, token, pricer, 'MOCK GUARD', 'mGUARD')
+    guard = GuardToken.deploy(token, pricer, 'MOCK GUARD', 'mGUARD', {'from': deployer})
