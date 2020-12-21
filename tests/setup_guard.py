@@ -4,10 +4,10 @@ from setup_user import *
 
 @pytest.fixture(scope='module')
 def simple_pricer(admin, SimplePricer):
-    return SimplePricer.deploy(100, {'from': admin})
+    return SimplePricer.deploy(100, 10**18, {'from': admin})
 
 
-@pytest.fixture(scope='module')
+@pytest.fixture(scope='function')
 def token(admin, MockERC20):
     return MockERC20.deploy("MockLP", "MLP", {'from': admin})
 
