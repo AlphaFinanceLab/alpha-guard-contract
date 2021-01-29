@@ -7,7 +7,7 @@ def test_set_pricer(admin, eve, guard, simple_pricer, SimplePricer):
     assert guard.pricer() == simple_pricer
     assert interface.IPricer(guard.pricer()).getCurrentPrice() == 100
     # set to another pricer
-    fake_pricer = SimplePricer.deploy(0, {'from': admin})
+    fake_pricer = SimplePricer.deploy(0, 10**18, {'from': admin})
     guard.setPricer(fake_pricer, {'from': admin})
 
     assert guard.pricer() == fake_pricer

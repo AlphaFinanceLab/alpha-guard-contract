@@ -11,9 +11,11 @@ contract SimplePricer is Governable, IPricer {
 
   uint public price;
   address public relayer;
+  uint public rate;
 
-  constructor(uint _price) public {
+  constructor(uint _price, uint _rate) public {
     price = _price;
+    rate = _rate;
     relayer = msg.sender;
   }
 
@@ -26,6 +28,11 @@ contract SimplePricer is Governable, IPricer {
     price = _price;
   }
 
+  function setRate(uint _rate) external {
+    require(msg.sender == relayer || msg.sender == governor, '!relayer');
+    rate = _rate;
+  }
+
   function getCurrentPrice() external view override returns (uint) {
     return price;
   }
@@ -35,7 +42,7 @@ contract SimplePricer is Governable, IPricer {
   }
 
   function getMaxPayout(uint spending) external view override returns (uint) {
-    return spending;
+    return spending.mul(rate).div(1e18);
   }
 
   function getPayout(uint count, uint startPrice) external view override returns (uint) {
